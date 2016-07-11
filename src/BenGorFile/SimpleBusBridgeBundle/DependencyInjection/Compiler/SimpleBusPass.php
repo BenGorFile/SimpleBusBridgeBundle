@@ -47,9 +47,9 @@ class SimpleBusPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $config = $container->getParameter('bengor_user.config');
+        $config = $container->getParameter('bengor_file.config');
 
-        foreach ($config['user_class'] as $key => $user) {
+        foreach ($config['file_class'] as $key => $file) {
             $bundles = $container->getParameter('kernel.bundles');
             foreach ($bundles as $bundle) {
                 $extension = (new $bundle())->getContainerExtension();
@@ -66,13 +66,13 @@ class SimpleBusPass implements CompilerPassInterface
      * Registers the command bus for given file.
      *
      * @param ContainerBuilder $container The container builder
-     * @param string           $user      The file name
+     * @param string           $file      The file name
      */
-    private function commandBus(ContainerBuilder $container, $user)
+    private function commandBus(ContainerBuilder $container, $file)
     {
-        $busId = 'bengor.file.simple_bus_' . $user . '_command_bus';
-        $middlewareTag = 'bengor_user_' . $user . '_command_bus_middleware';
-        $handlerTag = 'bengor_user_' . $user . '_command_bus_handler';
+        $busId = 'bengor.file.simple_bus_' . $file . '_command_bus';
+        $middlewareTag = 'bengor_file_' . $file . '_command_bus_middleware';
+        $handlerTag = 'bengor_file_' . $file . '_command_bus_handler';
 
         // Define the command bus for the given file type
         // The middleware tag string will be later used to add
@@ -93,7 +93,7 @@ class SimpleBusPass implements CompilerPassInterface
 
         // Declares callable resolver for the current file type's command bus
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.callable_resolver',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.callable_resolver',
             (new Definition(
                 ServiceLocatorAwareCallableResolver::class, [
                     [
@@ -105,7 +105,7 @@ class SimpleBusPass implements CompilerPassInterface
 
         // Declares class based command name resolver for the current file type's command bus
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.class_based_command_name_resolver',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.class_based_command_name_resolver',
             (new Definition(
                 ClassBasedNameResolver::class
             ))->setPublic(false)
@@ -114,12 +114,12 @@ class SimpleBusPass implements CompilerPassInterface
         // Declares the handler map for the current file type's command bus,
         // will contain the association between commands an handlers
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.command_handler_map',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.command_handler_map',
             (new Definition(
                 CallableMap::class, [
                     [],
                     $container->getDefinition(
-                        'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.callable_resolver'
+                        'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.callable_resolver'
                     ),
                 ]
             ))->setPublic(false)
@@ -128,14 +128,14 @@ class SimpleBusPass implements CompilerPassInterface
         // Declares the handler resolver with the NameResolver
         // strategy and HandlerMap key values for Command => Handler
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.command_handler_resolver',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.command_handler_resolver',
             (new Definition(
                 NameBasedMessageHandlerResolver::class, [
                     $container->getDefinition(
-                        'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.class_based_command_name_resolver'
+                        'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.class_based_command_name_resolver'
                     ),
                     $container->getDefinition(
-                        'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.command_handler_map'
+                        'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.command_handler_map'
                     ),
                 ]
             ))->setPublic(false)
@@ -144,25 +144,25 @@ class SimpleBusPass implements CompilerPassInterface
         // Declares the Handler
         $container
             ->findDefinition(
-                'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.delegates_to_message_handler_middleware'
+                'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.delegates_to_message_handler_middleware'
             )
             ->addArgument(
                 $container->getDefinition(
-                    'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.command_handler_resolver'
+                    'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.command_handler_resolver'
                 )
             )->setPublic(false);
 
         // Declares the tag that will be used to associate the
         // handlers to the current file type's command bus
         (new RegisterHandlers(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.command_handler_map',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.command_handler_map',
             $handlerTag,
             'handles'
         ))->process($container);
 
         // Decorate SimpleBus' command bus with BenGorFile's command bus
         $container->setDefinition(
-            'bengor_user.' . $user . '.command_bus',
+            'bengor_file.' . $file . '.command_bus',
             new Definition(
                 SimpleBusFileCommandBus::class, [
                     $container->getDefinition($busId),
@@ -175,13 +175,13 @@ class SimpleBusPass implements CompilerPassInterface
      * Registers the event bus for given file.
      *
      * @param ContainerBuilder $container The container builder
-     * @param string           $user      The file name
+     * @param string           $file      The file name
      */
-    private function eventBus(ContainerBuilder $container, $user)
+    private function eventBus(ContainerBuilder $container, $file)
     {
-        $busId = 'bengor.file.simple_bus_' . $user . '_event_bus';
-        $middlewareTag = 'bengor_user_' . $user . '_event_bus_middleware';
-        $subscriberTag = 'bengor_user_' . $user . '_event_subscriber';
+        $busId = 'bengor.file.simple_bus_' . $file . '_event_bus';
+        $middlewareTag = 'bengor_file_' . $file . '_event_bus_middleware';
+        $subscriberTag = 'bengor_file_' . $file . '_event_subscriber';
 
         // Define the event bus for the given file type
         // The middleware tag string will be later used to add
@@ -202,7 +202,7 @@ class SimpleBusPass implements CompilerPassInterface
 
         // Declares callable resolver for the current file type's event bus
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.callable_resolver',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.callable_resolver',
             (new Definition(
                 ServiceLocatorAwareCallableResolver::class, [
                     [
@@ -214,7 +214,7 @@ class SimpleBusPass implements CompilerPassInterface
 
         // Declares class based event name resolver for the current file type's event bus
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.class_based_event_name_resolver',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.class_based_event_name_resolver',
             (new Definition(
                 ClassBasedNameResolver::class
             ))->setPublic(false)
@@ -223,12 +223,12 @@ class SimpleBusPass implements CompilerPassInterface
         // Declares the event subscribers collection for the current file type's event bus,
         // will contain the association between events an subscribers
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.event_subscribers_collection',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.event_subscribers_collection',
             (new Definition(
                 CallableCollection::class, [
                     [],
                     $container->getDefinition(
-                        'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.callable_resolver'
+                        'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.callable_resolver'
                     ),
                 ]
             ))->setPublic(false)
@@ -237,14 +237,14 @@ class SimpleBusPass implements CompilerPassInterface
         // Declares the subscriber resolver with the NameResolver
         // strategy and SubscriberCollection key values for Event => Subscriber
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.event_subscribers_resolver',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.event_subscribers_resolver',
             (new Definition(
                 NameBasedMessageSubscriberResolver::class, [
                     $container->getDefinition(
-                        'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.class_based_event_name_resolver'
+                        'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.class_based_event_name_resolver'
                     ),
                     $container->getDefinition(
-                        'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.event_subscribers_collection'
+                        'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.event_subscribers_collection'
                     ),
                 ]
             ))->setPublic(false)
@@ -253,25 +253,25 @@ class SimpleBusPass implements CompilerPassInterface
         // Declares the Subscriber
         $container
             ->findDefinition(
-                'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.delegates_to_message_handler_middleware'
+                'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.delegates_to_message_handler_middleware'
             )
             ->addArgument(
                 $container->getDefinition(
-                    'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.event_subscribers_resolver'
+                    'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.event_subscribers_resolver'
                 )
             )->setPublic(false);
 
         // Declares the tag that will be used to associate the
         // subscribers to the current file type's event bus
         (new RegisterSubscribers(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.event_subscribers_collection',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.event_subscribers_collection',
             $subscriberTag,
             'subscribes_to'
         ))->process($container);
 
         // Decorate SimpleBus' event bus with BenGorFile's event bus
         $container->setDefinition(
-            'bengor_user.' . $user . '.event_bus',
+            'bengor_file.' . $file . '.event_bus',
             new Definition(
                 SimpleBusFileEventBus::class, [
                     $container->getDefinition($busId),
@@ -281,7 +281,7 @@ class SimpleBusPass implements CompilerPassInterface
 
         // All about aggregate recorded message
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.aggregates_recorded_messages',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.aggregates_recorded_messages',
             new Definition(
                 AggregatesRecordedMessages::class, [
                     [],
@@ -290,23 +290,23 @@ class SimpleBusPass implements CompilerPassInterface
         )->setPublic(false);
         $container
             ->findDefinition(
-                'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.handles_recorded_messages_middleware'
+                'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.handles_recorded_messages_middleware'
             )
             ->setArguments([
                 $container->getDefinition(
-                    'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.aggregates_recorded_messages'
+                    'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.aggregates_recorded_messages'
                 ),
                 $container->getDefinition($busId),
             ])->setPublic(false);
         (new RegisterMessageRecorders(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.aggregates_recorded_messages',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.aggregates_recorded_messages',
             'event_recorder'
         ))->process($container);
 
         CompilerPassUtil::prependBeforeOptimizationPass(
             $container,
             new AddMiddlewareTags(
-                'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.handles_recorded_messages_middleware',
+                'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.handles_recorded_messages_middleware',
                 ['command'],
                 200
             )

@@ -46,46 +46,46 @@ class SimpleBusBridgeExtension extends Extension implements PrependExtensionInte
     public function prepend(ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $configs = $container->getExtensionConfig('ben_gor_user');
+        $configs = $container->getExtensionConfig('ben_gor_file');
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('bengor_user.config', $config);
+        $container->setParameter('bengor_file.config', $config);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addMiddlewareTags(ContainerBuilder $container, $user)
+    public function addMiddlewareTags(ContainerBuilder $container, $file)
     {
         // Related with Command Bus
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_command_bus.delegates_to_message_handler_middleware',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_command_bus.delegates_to_message_handler_middleware',
             (new Definition(DelegatesToMessageHandlerMiddleware::class))->addTag(
-                'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '-1000']
+                'bengor_file_' . $file . '_command_bus_middleware', ['priority' => '-1000']
             )
         );
         $container->getDefinition(
-            'bengor_user.simple_bus_bridge_bundle.finishes_command_before_handling_next_middleware'
+            'bengor_file.simple_bus_bridge_bundle.finishes_command_before_handling_next_middleware'
         )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '1000']
+            'bengor_file_' . $file . '_command_bus_middleware', ['priority' => '1000']
         );
 
         // Related with Event Bus
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.delegates_to_message_handler_middleware',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.delegates_to_message_handler_middleware',
             (new Definition(NotifiesMessageSubscribersMiddleware::class))->addTag(
-                'bengor_user_' . $user . '_event_bus_middleware', ['priority' => '-1000']
+                'bengor_file_' . $file . '_event_bus_middleware', ['priority' => '-1000']
             )
         )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
+            'bengor_file_' . $file . '_command_bus_middleware', ['priority' => '200']
         );
         $container->setDefinition(
-            'bengor_user.simple_bus_bridge_bundle.' . $user . '_event_bus.handles_recorded_messages_middleware',
+            'bengor_file.simple_bus_bridge_bundle.' . $file . '_event_bus.handles_recorded_messages_middleware',
             (new Definition(HandlesRecordedMessagesMiddleware::class))->addTag(
-                'bengor_user_' . $user . '_event_bus_middleware', ['priority' => '-1000']
+                'bengor_file_' . $file . '_event_bus_middleware', ['priority' => '-1000']
             )
         )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '200']
+            'bengor_file_' . $file . '_command_bus_middleware', ['priority' => '200']
         );
 
         return $container;

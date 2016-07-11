@@ -7,14 +7,14 @@
 # file that was distributed with this source code.
 
 services:
-    bengor_user.simple_bus_bridge_bundle.collects_events_from_entities:
+    bengor_file.simple_bus_bridge_bundle.collects_events_from_entities:
         class: BenGorFile\SimpleBusBridgeBundle\EventListener\CollectsEventsFromEntities
         public: false
         tags:
             - { name: event_recorder }
             - { name: doctrine.event_subscriber }
 
-    bengor_user.simple_bus_bridge_bundle.doctrine_orm_transactional_middleware:
+    bengor_file.simple_bus_bridge_bundle.doctrine_orm_transactional_middleware:
         class: SimpleBus\DoctrineORMBridge\MessageBus\WrapsMessageHandlingInTransaction
         public: false
         arguments:

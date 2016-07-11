@@ -7,6 +7,6 @@
 # file that was distributed with this source code.
 
 services:
-    bengor_user.simple_bus_bridge_bundle.finishes_command_before_handling_next_middleware:
+    bengor_file.simple_bus_bridge_bundle.finishes_command_before_handling_next_middleware:
         class: SimpleBus\Message\Bus\Middleware\FinishesHandlingMessageBeforeHandlingNext
         public: false

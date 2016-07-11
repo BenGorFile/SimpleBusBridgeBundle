@@ -53,7 +53,7 @@ class WrapsMessageHandlingInTransaction implements MessageBusMiddleware
     {
         $documentManager = $this->managerRegistry->getManager($this->documentManagerName);
 
-        call_user_func($next, $message);
+        call_file_func($next, $message);
         $documentManager->flush();
     }
 }

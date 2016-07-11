@@ -26,9 +26,9 @@ interface SimpleBusTaggerExtension
      * Adds tags to Simple bus middleware.
      *
      * @param ContainerBuilder $container The container
-     * @param string           $user      The file name
+     * @param string           $file      The file name
      *
      * @return ContainerBuilder
      */
-    public function addMiddlewareTags(ContainerBuilder $container, $user);
+    public function addMiddlewareTags(ContainerBuilder $container, $file);
 }

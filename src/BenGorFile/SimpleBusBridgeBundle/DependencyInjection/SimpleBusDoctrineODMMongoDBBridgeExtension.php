@@ -42,21 +42,21 @@ class SimpleBusDoctrineODMMongoDBBridgeExtension extends Extension implements Pr
     public function prepend(ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $configs = $container->getExtensionConfig('ben_gor_user');
+        $configs = $container->getExtensionConfig('ben_gor_file');
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('bengor_user.config', $config);
+        $container->setParameter('bengor_file.config', $config);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addMiddlewareTags(ContainerBuilder $container, $user)
+    public function addMiddlewareTags(ContainerBuilder $container, $file)
     {
         $container->getDefinition(
-            'bengor_user.simple_bus_bridge_bundle.doctrine_odm_mongodb_transactional_middleware'
+            'bengor_file.simple_bus_bridge_bundle.doctrine_odm_mongodb_transactional_middleware'
         )->addTag(
-            'bengor_user_' . $user . '_command_bus_middleware', ['priority' => '0']
+            'bengor_file_' . $file . '_command_bus_middleware', ['priority' => '0']
         );
 
         return $container;

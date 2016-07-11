@@ -54,45 +54,45 @@ class CollectsEventsFromDocumentsSpec extends ObjectBehavior
         ]);
     }
 
-    function it_post_persist(LifecycleEventArgs $event, FileAggregateRoot $user)
+    function it_post_persist(LifecycleEventArgs $event, FileAggregateRoot $file)
     {
-        $event->getObject()->shouldBeCalled()->willReturn($user);
-        $user->events()->shouldBeCalled()->willReturn([]);
+        $event->getObject()->shouldBeCalled()->willReturn($file);
+        $file->events()->shouldBeCalled()->willReturn([]);
 
-        $user->eraseEvents()->shouldBeCalled();
+        $file->eraseEvents()->shouldBeCalled();
 
         $this->postPersist($event);
     }
 
-    function it_post_update(LifecycleEventArgs $event, FileAggregateRoot $user)
+    function it_post_update(LifecycleEventArgs $event, FileAggregateRoot $file)
     {
-        $event->getObject()->shouldBeCalled()->willReturn($user);
-        $user->events()->shouldBeCalled()->willReturn([]);
+        $event->getObject()->shouldBeCalled()->willReturn($file);
+        $file->events()->shouldBeCalled()->willReturn([]);
 
-        $user->eraseEvents()->shouldBeCalled();
+        $file->eraseEvents()->shouldBeCalled();
 
         $this->postUpdate($event);
     }
 
-    function it_post_remove(LifecycleEventArgs $event, FileAggregateRoot $user)
+    function it_post_remove(LifecycleEventArgs $event, FileAggregateRoot $file)
     {
-        $event->getObject()->shouldBeCalled()->willReturn($user);
-        $user->events()->shouldBeCalled()->willReturn([]);
+        $event->getObject()->shouldBeCalled()->willReturn($file);
+        $file->events()->shouldBeCalled()->willReturn([]);
 
-        $user->eraseEvents()->shouldBeCalled();
+        $file->eraseEvents()->shouldBeCalled();
 
         $this->postRemove($event);
     }
 
-    function it_manage_recorded_events(LifecycleEventArgs $event, FileAggregateRoot $user)
+    function it_manage_recorded_events(LifecycleEventArgs $event, FileAggregateRoot $file)
     {
-        $event->getObject()->shouldBeCalled()->willReturn($user);
-        $user->events()->shouldBeCalled()->willReturn([
+        $event->getObject()->shouldBeCalled()->willReturn($file);
+        $file->events()->shouldBeCalled()->willReturn([
             new FileUploaded(
                 new FileId('file-id')
             ),
         ]);
-        $user->eraseEvents()->shouldBeCalled();
+        $file->eraseEvents()->shouldBeCalled();
 
         $this->postPersist($event);
 
