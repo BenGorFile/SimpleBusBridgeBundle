@@ -33,7 +33,7 @@ class BenGorFileSimpleBusBridgeBundle extends Bundle implements LoadableBundle
      */
     public function build(ContainerBuilder $container)
     {
-        $this->checkDependencies(['BenGorFileBenGorFileBundle'], $container);
+        $this->checkDependencies(['BenGorFileBundle'], $container);
     }
 
     /**

@@ -31,7 +31,7 @@ class BenGorFileSimpleBusDoctrineORMBridgeBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $this->checkDependencies([
-            'BenGorFileBenGorFileBundle',
+            'BenGorFileBundle',
             'BenGorFileDoctrineORMBridgeBundle',
             'DoctrineBundle',
         ], $container);
