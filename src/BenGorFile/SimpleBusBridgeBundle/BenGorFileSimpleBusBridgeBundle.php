@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SimpleBusBridgeBundle extends Bundle implements LoadableBundle
+class BenGorFileSimpleBusBridgeBundle extends Bundle implements LoadableBundle
 {
     use DependentBenGorFileBundle;
 
@@ -33,7 +33,7 @@ class SimpleBusBridgeBundle extends Bundle implements LoadableBundle
      */
     public function build(ContainerBuilder $container)
     {
-        $this->checkDependencies(['BenGorFileBundle'], $container);
+        $this->checkDependencies(['BenGorFileBenGorFileBundle'], $container);
     }
 
     /**

@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SimpleBusDoctrineODMMongoDBBridgeBundle extends Bundle
+class BenGorFileSimpleBusDoctrineODMMongoDBBridgeBundle extends Bundle
 {
     use DependentBenGorFileBundle;
 
@@ -31,7 +31,9 @@ class SimpleBusDoctrineODMMongoDBBridgeBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $this->checkDependencies([
-            'BenGorFileBundle', 'DoctrineODMMongoDBBridgeBundle', 'DoctrineMongoDBBundle',
+            'BenGorFileBenGorFileBundle',
+            'BenGorFileDoctrineODMMongoDBBridgeBundle',
+            'DoctrineMongoDBBundle',
         ], $container);
     }
 }
