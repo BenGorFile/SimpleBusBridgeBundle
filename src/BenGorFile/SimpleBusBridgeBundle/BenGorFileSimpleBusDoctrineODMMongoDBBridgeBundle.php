@@ -13,7 +13,6 @@
 namespace BenGorFile\SimpleBusBridgeBundle;
 
 use BenGorFile\FileBundle\DependentBenGorFileBundle;
-use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\SimpleBusDoctrineODMMongoDBBridgeExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -36,13 +35,5 @@ class BenGorFileSimpleBusDoctrineODMMongoDBBridgeBundle extends Bundle
             'BenGorFileDoctrineODMMongoDBBridgeBundle',
             'DoctrineMongoDBBundle',
         ], $container);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getContainerExtension()
-    {
-        return new SimpleBusDoctrineODMMongoDBBridgeExtension();
     }
 }

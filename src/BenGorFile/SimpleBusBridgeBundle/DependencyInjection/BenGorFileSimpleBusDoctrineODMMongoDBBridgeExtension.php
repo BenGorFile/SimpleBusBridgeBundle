@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SimpleBusDoctrineODMMongoDBBridgeExtension extends Extension implements PrependExtensionInterface, SimpleBusTaggerExtension
+class BenGorFileSimpleBusDoctrineODMMongoDBBridgeExtension extends Extension implements PrependExtensionInterface, SimpleBusTaggerExtension
 {
     /**
      * {@inheritdoc}

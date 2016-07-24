@@ -13,7 +13,6 @@
 namespace spec\BenGorFile\SimpleBusBridgeBundle;
 
 use BenGorFile\SimpleBusBridgeBundle\BenGorFileSimpleBusDoctrineODMMongoDBBridgeBundle;
-use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\SimpleBusDoctrineODMMongoDBBridgeExtension;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
@@ -50,10 +49,5 @@ class BenGorFileSimpleBusDoctrineODMMongoDBBridgeBundleSpec extends ObjectBehavi
         ]);
 
         $this->build($container);
-    }
-
-    function it_gets_extension()
-    {
-        $this->getContainerExtension()->shouldReturnAnInstanceOf(SimpleBusDoctrineODMMongoDBBridgeExtension::class);
     }
 }

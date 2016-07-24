@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class SimpleBusBridgeExtension extends Extension implements PrependExtensionInterface, SimpleBusTaggerExtension
+class BenGorFileSimpleBusBridgeExtension extends Extension implements PrependExtensionInterface, SimpleBusTaggerExtension
 {
     /**
      * {@inheritdoc}

@@ -15,7 +15,6 @@ namespace spec\BenGorFile\SimpleBusBridgeBundle;
 use BenGorFile\FileBundle\LoadableBundle;
 use BenGorFile\SimpleBusBridgeBundle\BenGorFileSimpleBusBridgeBundle;
 use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\Compiler\SimpleBusPass;
-use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\SimpleBusBridgeExtension;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -57,11 +56,6 @@ class BenGorFileSimpleBusBridgeBundleSpec extends ObjectBehavior
         ]);
 
         $this->build($container);
-    }
-
-    function it_gets_extension()
-    {
-        $this->getContainerExtension()->shouldReturnAnInstanceOf(SimpleBusBridgeExtension::class);
     }
 
     function it_loads(ContainerBuilder $container)
