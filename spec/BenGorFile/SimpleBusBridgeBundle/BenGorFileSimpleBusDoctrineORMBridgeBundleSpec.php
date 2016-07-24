@@ -12,36 +12,28 @@
 
 namespace spec\BenGorFile\SimpleBusBridgeBundle;
 
-use BenGorFile\FileBundle\LoadableBundle;
-use BenGorFile\SimpleBusBridgeBundle\BenGorFileSimpleBusBridgeBundle;
-use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\Compiler\SimpleBusPass;
-use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\SimpleBusBridgeExtension;
+use BenGorFile\SimpleBusBridgeBundle\BenGorFileSimpleBusDoctrineORMBridgeBundle;
+use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\SimpleBusDoctrineORMBridgeExtension;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Spec file of SimpleBusBridgeBundle class.
+ * Spec file of BenGorFileSimpleBusDoctrineORMBridgeBundle class.
  *
  * @author Beñat Espiña <benatespina@gmail.com>
  */
-class BenGorFileSimpleBusBridgeBundleSpec extends ObjectBehavior
+class BenGorFileSimpleBusDoctrineORMBridgeBundleSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(BenGorFileSimpleBusBridgeBundle::class);
+        $this->shouldHaveType(BenGorFileSimpleBusDoctrineORMBridgeBundle::class);
     }
 
     function it_extends_symfony_bundle()
     {
         $this->shouldHaveType(Bundle::class);
-    }
-
-    function it_implements_loadable_bundle()
-    {
-        $this->shouldImplement(LoadableBundle::class);
     }
 
     function it_builds_without_dependent_bundles_enabled(ContainerBuilder $container)
@@ -52,8 +44,9 @@ class BenGorFileSimpleBusBridgeBundleSpec extends ObjectBehavior
     function it_builds(ContainerBuilder $container)
     {
         $container->getParameter('kernel.bundles')->shouldBeCalled()->willReturn([
-            'BenGorFileBundle' => 'BenGorFile\\FileBundle\\BenGorFileBundle',
-            'DoctrineBundle'   => 'Doctrine\\Bundle\\DoctrineBundle\\DoctrineBundle',
+            'BenGorFileBundle'                  => 'BenGorFile\\FileBundle\\BenGorFileBundle',
+            'BenGorFileDoctrineORMBridgeBundle' => 'BenGorFile\\DoctrineORMBridgeBundle\\BenGorFileDoctrineORMBridgeBundle',
+            'DoctrineBundle'                    => 'Doctrine\\Bundle\\DoctrineBundle\\DoctrineBundle',
         ]);
 
         $this->build($container);
@@ -61,15 +54,6 @@ class BenGorFileSimpleBusBridgeBundleSpec extends ObjectBehavior
 
     function it_gets_extension()
     {
-        $this->getContainerExtension()->shouldReturnAnInstanceOf(SimpleBusBridgeExtension::class);
-    }
-
-    function it_loads(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(
-            new SimpleBusPass(), PassConfig::TYPE_OPTIMIZE
-        )->shouldBeCalled()->willReturn($container);
-
-        $this->load($container);
+        $this->getContainerExtension()->shouldReturnAnInstanceOf(SimpleBusDoctrineORMBridgeExtension::class);
     }
 }

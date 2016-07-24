@@ -37,6 +37,8 @@ class WrapsMessageHandlingInTransaction implements MessageBusMiddleware
     private $managerRegistry;
 
     /**
+     * Constructor.
+     *
      * @param ManagerRegistry $managerRegistry     The manager registry
      * @param string          $documentManagerName The document manager name
      */
@@ -53,7 +55,7 @@ class WrapsMessageHandlingInTransaction implements MessageBusMiddleware
     {
         $documentManager = $this->managerRegistry->getManager($this->documentManagerName);
 
-        call_file_func($next, $message);
+        call_user_func($next, $message);
         $documentManager->flush();
     }
 }

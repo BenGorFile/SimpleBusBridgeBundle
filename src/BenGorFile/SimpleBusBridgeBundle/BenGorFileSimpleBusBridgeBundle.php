@@ -15,6 +15,7 @@ namespace BenGorFile\SimpleBusBridgeBundle;
 use BenGorFile\FileBundle\DependentBenGorFileBundle;
 use BenGorFile\FileBundle\LoadableBundle;
 use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\Compiler\SimpleBusPass;
+use BenGorFile\SimpleBusBridgeBundle\DependencyInjection\SimpleBusBridgeExtension;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -34,6 +35,14 @@ class BenGorFileSimpleBusBridgeBundle extends Bundle implements LoadableBundle
     public function build(ContainerBuilder $container)
     {
         $this->checkDependencies(['BenGorFileBundle'], $container);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContainerExtension()
+    {
+        return new SimpleBusBridgeExtension();
     }
 
     /**
